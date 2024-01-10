@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import createThreadFormSchema from "@/lib/validations/thread";
+import { createThread } from "@/lib/actions/thread.action";
   
 function CreateThreadForm({userId} : {userId: string}) {
   const pathname = usePathname();
@@ -30,7 +31,16 @@ function CreateThreadForm({userId} : {userId: string}) {
       accountId : userId
     },
   });
-  const onSubmit = ()=>{}
+  const onSubmit = async (values : z.infer<typeof createThreadFormSchema>)=>{
+    await createThread({
+      message : values.thread,
+      author : userId,
+      communityId : null,
+      path : pathname
+    })
+    form.reset();
+    router.push('/');
+  }
   return (
     <Form {...form}>
       <form

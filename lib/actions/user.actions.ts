@@ -20,7 +20,7 @@ export async function updateUser({
     path : string
 }) : Promise<void>{
     try{
-        connectToDb();
+        await connectToDb();
         await User.findOneAndUpdate({
             id : userId
         }, {
