@@ -39,7 +39,7 @@ export async function updateUser({
         }
 
     }catch(err :any){
-        throw new Error (`Failed to create User ${err.message}`,)
+        console.log(`Failed to create User ${err.message}`,)
     }
 
 }
@@ -55,6 +55,6 @@ export async function fetchUser({
         return await User.findOne({id : userId});
         
     }catch(err:any){
-        throw new Error(`Error fetching user ${err.message}`)
+        console.log(`Error fetching user ${err.message}`)
     }
 }

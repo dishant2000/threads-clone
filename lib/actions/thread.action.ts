@@ -4,12 +4,16 @@ import { revalidatePath } from "next/cache";
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { connectToDb } from "../mongoose";
+import mongoose from "mongoose";
 
 interface params {
   message: string;
   author: string;
   communityId: string | null;
   path: string;
+}
+interface commentParams extends params {
+  threadId : string,
 }
 export const createThread = async ({
   message,
@@ -31,6 +35,7 @@ export const createThread = async ({
     });
 
     revalidatePath(path);
+    return createdThread._id;
   } catch (err: any) {
     console.log(`Error while creating thread ${err.message}`);
   }
@@ -41,7 +46,7 @@ export const fetchThreads = async ({ page = 1, pageSize = 20 }) => {
     await connectToDb();
     const offset = (page - 1)*pageSize;
     const threadQuery = Thread.find({
-      parentId: { $in: [null, "undefined"] },
+      parent: { $in: [null, "undefined"] },
     })
     .sort({createdAt : 'desc'})
     .skip(offset)
@@ -60,6 +65,7 @@ export const fetchThreads = async ({ page = 1, pageSize = 20 }) => {
     })
     const totalPost = await Thread.countDocuments({parentId : {$in : [null, 'undefined']}});
     const posts = await threadQuery.exec();
+    console.log("these are posts ",posts)
     const isNext = totalPost > offset + posts.length;
     return {posts, totalPost, isNext};
   } catch (err: any) {
@@ -101,5 +107,32 @@ export const fetchThreadByID = async (id : string) =>{
      return await threadQuery.exec();
   }catch(err : any){
     console.log(`Error while fetching thread ${err.message}`);
+  }
+}
+
+export const createComment = async ({
+  message,
+  author,
+  communityId,
+  path,
+  threadId,
+}:commentParams) => {
+  try{
+    await connectToDb();
+    
+    const originalThread = await Thread.findById(threadId); 
+    if(!originalThread) throw new Error(`Could not find Thread ${author}`);
+    const createComment = new Thread({
+      message,
+      author,
+      communityId: communityId || null,
+      parent : threadId
+    })
+    const savedComment = await createComment.save();
+    originalThread.children.push(savedComment._id);
+    await originalThread.save();
+    revalidatePath(path);
+  }catch(err:any){
+    throw new Error(`Error while creating comment ${err.message}`);
   }
 }

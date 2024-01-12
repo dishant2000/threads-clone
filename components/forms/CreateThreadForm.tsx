@@ -55,7 +55,7 @@ function CreateThreadForm({userId} : {userId: string}) {
               <FormLabel className="text-base-semibold text-light-2">
                 lets post a thread !
               </FormLabel>
-              <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1 text-small-semibold">
+              <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1 text-base-medium">
                 <Textarea rows={15} {...field} />
               </FormControl>
               <FormMessage />

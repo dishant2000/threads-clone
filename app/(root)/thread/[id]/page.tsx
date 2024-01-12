@@ -1,4 +1,6 @@
+// "use client"
 import ThreadCard from "@/components/cards/ThreadCard";
+import CommentForm from "@/components/forms/CommentForm";
 import { fetchThreadByID } from "@/lib/actions/thread.action";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -28,7 +30,25 @@ async function ThreadDetails ({params} : {params : {id : string}}){
                 />
             </div>
             <div>
-                
+            <CommentForm userId={userInfo._id} threadId={thread._id} userImg={userInfo.image}/>
+            </div>
+            <div>
+                {thread.children.map((child : any) => {
+                    return(
+                        <ThreadCard
+                            key = {child._id}
+                            id = {child._id}
+                            content = {child.message}
+                            currentUserId = {user?.id}
+                            community = {child.communityId}
+                            comments = {child.children}
+                            createdAt = {child.createdAt}
+                            author={child.author}
+                            parentId = {child.parentId}
+                            isComment = {true}
+                        />
+                    )
+                })}
             </div>
         </section>
     )

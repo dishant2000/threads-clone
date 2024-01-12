@@ -35,7 +35,7 @@ function ThreadCard({
 }:props) {
   return (
     <article
-      className={`flex w-full flex-col rounded-xl mb-4 ${
+      className={`flex w-full flex-col rounded-xl my-4 ${
         isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
       }`}
     >
