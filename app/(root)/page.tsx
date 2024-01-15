@@ -7,6 +7,7 @@ export default async function Home() {
   const res = await fetchThreads({page : 1, pageSize : 30});
   return (
     <div>
+      {/* {console.log("community", res)} */}
       <h1 className="head-text">Home</h1>
       <section>
         {res?.posts.length == 0 ? <p className="no-result text-light-1">No threads yet Create a new Thread !</p> : 
@@ -17,7 +18,7 @@ export default async function Home() {
                 id = {post._id}
                 message = {post.message}
                 currentUserId = {user?.id}
-                community = {post.communityId}
+                community = {post.community}
                 comments = {post.children}
                 createdAt = {post.createdAt}
                 author={post.author}

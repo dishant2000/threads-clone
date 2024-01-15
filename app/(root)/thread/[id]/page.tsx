@@ -22,7 +22,7 @@ async function ThreadDetails ({params} : {params : {id : string}}){
                 id = {thread._id}
                 message = {thread.message}
                 currentUserId = {user?.id}
-                community = {thread.communityId}
+                community = {thread.community}
                 comments = {thread.children}
                 createdAt = {thread.createdAt}
                 author={thread.author}
@@ -40,7 +40,7 @@ async function ThreadDetails ({params} : {params : {id : string}}){
                             id = {child._id}
                             message = {child.message}
                             currentUserId = {user?.id}
-                            community = {child.communityId}
+                            community = {child.community}
                             comments = {child.children}
                             createdAt = {child.createdAt}
                             author={child.author}

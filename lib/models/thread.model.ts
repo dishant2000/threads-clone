@@ -11,7 +11,7 @@ const threadSchema = new mongoose.Schema({
      ref : "Thread",
      required : true   
     },
-    communityId : {
+    community : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "Community"
     },

@@ -20,10 +20,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import createThreadFormSchema from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.action";
+import { useOrganization } from "@clerk/nextjs";
   
 function CreateThreadForm({userId} : {userId: string}) {
   const pathname = usePathname();
   const router = useRouter();
+  const {organization} = useOrganization();
   const form = useForm<z.infer<typeof createThreadFormSchema>>({
     resolver: zodResolver(createThreadFormSchema),
     defaultValues: {
@@ -35,7 +37,7 @@ function CreateThreadForm({userId} : {userId: string}) {
     await createThread({
       message : values.thread,
       author : userId,
-      communityId : null,
+      communityId : organization ? organization.id : null,
       path : pathname
     })
     form.reset();

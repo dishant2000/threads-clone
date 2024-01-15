@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { createComment } from "@/lib/actions/thread.action";
+import { useOrganization } from "@clerk/nextjs";
 
 interface commentFormProps{
     threadId : string, 
@@ -30,6 +31,7 @@ const CommentForm = ({threadId, userImg, userId} : commentFormProps)=>{
     
     const pathname = usePathname();
   const router = useRouter();
+  const {organization} = useOrganization();
   const form = useForm<z.infer<typeof commentFormSchema>>({
     resolver: zodResolver(commentFormSchema),
     defaultValues: {
@@ -42,7 +44,7 @@ const CommentForm = ({threadId, userImg, userId} : commentFormProps)=>{
       threadId : threadId,
       author : userId,
       path : pathname,
-      communityId : null
+      communityId : organization ? organization.id : null
     });
     form.reset();
   }

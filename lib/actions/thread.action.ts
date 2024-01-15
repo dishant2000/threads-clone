@@ -5,6 +5,7 @@ import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { connectToDb } from "../mongoose";
 import mongoose from "mongoose";
+import Community from "../models/community.model";
 
 interface params {
   message: string;
@@ -26,7 +27,7 @@ export const createThread = async ({
     const createdThread = await Thread.create({
       message,
       author,
-      communityId: communityId || null,
+      community: communityId || null,
     });
     // update the corresponding user
 
@@ -54,6 +55,10 @@ export const fetchThreads = async ({ page = 1, pageSize = 20 }) => {
     .populate({
         path : 'author',
         model : User
+    })
+    .populate({
+      path: "community",
+      model: Community,
     })
     .populate({
         path : 'children',
@@ -124,7 +129,7 @@ export const createComment = async ({
     const createComment = new Thread({
       message,
       author,
-      communityId: communityId || null,
+      community: communityId || null,
       parent : threadId
     })
     const savedComment = await createComment.save();
