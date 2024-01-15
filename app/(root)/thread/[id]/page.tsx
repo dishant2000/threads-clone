@@ -20,7 +20,7 @@ async function ThreadDetails ({params} : {params : {id : string}}){
             <ThreadCard
                 key = {thread._id}
                 id = {thread._id}
-                content = {thread.message}
+                message = {thread.message}
                 currentUserId = {user?.id}
                 community = {thread.communityId}
                 comments = {thread.children}
@@ -38,7 +38,7 @@ async function ThreadDetails ({params} : {params : {id : string}}){
                         <ThreadCard
                             key = {child._id}
                             id = {child._id}
-                            content = {child.message}
+                            message = {child.message}
                             currentUserId = {user?.id}
                             community = {child.communityId}
                             comments = {child.children}

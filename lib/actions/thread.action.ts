@@ -60,12 +60,11 @@ export const fetchThreads = async ({ page = 1, pageSize = 20 }) => {
         populate : {
             path : 'author',
             model : User,
-            select : "_id name parentId image"
+            select : "_id name parent image"
         }
     })
     const totalPost = await Thread.countDocuments({parentId : {$in : [null, 'undefined']}});
     const posts = await threadQuery.exec();
-    console.log("these are posts ",posts)
     const isNext = totalPost > offset + posts.length;
     return {posts, totalPost, isNext};
   } catch (err: any) {
@@ -91,14 +90,14 @@ export const fetchThreadByID = async (id : string) =>{
           {
             path : 'author',
             model : User,
-            select : "_id id name parentId image"
+            select : "_id id name parent image"
           },
           {
             path : 'children',
             populate : {
               path : "author",
               model : User,
-              select : "_id id name parentId image"
+              select : "_id id name parent image"
             }
           }
         ]
@@ -134,5 +133,29 @@ export const createComment = async ({
     revalidatePath(path);
   }catch(err:any){
     throw new Error(`Error while creating comment ${err.message}`);
+  }
+}
+
+export const fetchUserThreads = async (userId : string)=>{
+  try{
+    await connectToDb();
+    const fetchThreadQuery = User.findOne({
+      _id : userId
+    }).populate({
+      path : 'threads',
+      model: Thread,
+      populate : {
+        path : 'children',
+        model : Thread,
+        populate : {
+          path : 'author',
+          model : User,
+          select : "_id id name parent image"
+        }
+      }
+    });
+    return await fetchThreadQuery.exec();
+  }catch(err :any) {
+    throw new Error(`Error while fetching user Threads : ${err.message}`);
   }
 }

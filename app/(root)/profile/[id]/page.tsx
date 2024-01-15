@@ -1,3 +1,4 @@
+import ProfileHeader from "@/components/shared/ProfileHeader";
 import UserProfiler from "@/components/shared/UserProfiler";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs"
@@ -10,14 +11,19 @@ const Profile = async ({params} : {params : {id : string}})=>{
     const userInfo = await fetchUser({userId : params.id});
     if(!userInfo.onboarded) redirect("/onboarding");
     return(
-        <UserProfiler 
-            id={userInfo._id}
-            name={userInfo.name}
-            username={userInfo.username}
-            image={userInfo.image}
-            bio={userInfo.bio}
-            threads={userInfo.threads}
-        />
+        <>
+            <ProfileHeader
+                name={userInfo.name}
+                username={userInfo.username}
+                image={userInfo.image}
+                bio={userInfo.bio}
+            />
+            <UserProfiler 
+                id={userInfo._id}
+                threads={userInfo.threads}
+            />
+        
+        </>
     )
 }
 

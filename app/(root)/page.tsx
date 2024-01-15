@@ -15,7 +15,7 @@ export default async function Home() {
               <ThreadCard
                 key = {post._id}
                 id = {post._id}
-                content = {post.message}
+                message = {post.message}
                 currentUserId = {user?.id}
                 community = {post.communityId}
                 comments = {post.children}

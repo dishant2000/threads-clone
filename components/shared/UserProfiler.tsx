@@ -1,45 +1,18 @@
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
+import ProfileTab from "./ProfileTab";
 interface userProfilerProps {
   id: string;
-  name: string;
-  username: string;
-  image: string;
-  bio: string;
   threads: any[]
 }
 const UserProfiler = ({
   id,
-  name,
-  username,
-  image,
-  bio,
   threads
 }: userProfilerProps) => {
   return (
-    <div className="flex flex-col items-start gap-8">
-      <div>
-        <div className="flex items-start gap-6">
-          <div className="relative w-20 h-20 object-cover">
-            <Image
-              src={image}
-              alt={name}
-              fill
-              className="rounded-full object-cover shadow-2xl"
-            />
-          </div>
-          <div className="flex flex-col items-start ">
-            <h2 className="text-heading2-semibold text-light-2">{name}</h2>
-            <p className="text-base-regular text-light-3">@{username}</p>
-          </div>
-        </div>
-        <div className="mt-8">
-          <p className="text-base1-medium text-light-2">{bio}</p>
-        </div>
-      </div>
-      <div className="w-full"> 
-      <Tabs defaultValue="account" className="w-full">
+    <div className="flex flex-col items-start gap-8 w-full mt-8">
+      <Tabs defaultValue="threads" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) =>{
                 return <TabsTrigger key={tab.label} value={tab.value} className='tab'>
@@ -61,11 +34,16 @@ const UserProfiler = ({
             })}
           </TabsList>
           <TabsContent value="threads">
-            Make changes to your account here.
+           {profileTabs.map((tab) => {
+            return <ProfileTab
+              key = {tab.label}
+              tab = {tab}
+              userId = {id}
+            />
+           })}
           </TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
-      </div>
     </div>
   );
 };

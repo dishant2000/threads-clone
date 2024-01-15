@@ -9,7 +9,7 @@ interface props{
         image  : string,
         id : string
     }, 
-    content : string,
+    message : string,
     parentId : string,
     community : {
         name : string, 
@@ -27,7 +27,7 @@ interface props{
 
 
 function ThreadCard({
-    content,
+    message,
     author,
     id,
     isComment,
@@ -61,7 +61,7 @@ function ThreadCard({
               </h4>
             </Link>
 
-            <p className='mt-2 text-small-regular text-light-2'>{content}</p>
+            <p className='mt-2 text-small-regular text-light-2'>{message}</p>
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className='flex gap-3.5'>
