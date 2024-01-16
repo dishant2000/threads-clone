@@ -42,7 +42,6 @@ const UserProfiler = ({
             />
            })}
           </TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
     </div>
   );

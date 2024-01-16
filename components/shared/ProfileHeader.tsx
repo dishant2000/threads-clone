@@ -4,12 +4,14 @@ const ProfileHeader = async({
     image, 
     username,
     name, 
-    bio
+    bio,
+    type
 }:{
     image : string, 
     username : string, 
     name : string, 
-    bio : string
+    bio : string,
+    type ?: "community" | "user"
 })=>{
     return (
         <div>

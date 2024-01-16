@@ -24,16 +24,28 @@ export const createThread = async ({
 }: params) => {
   try {
     await connectToDb();
+    const communityIdObject = await Community.findOne(
+      { id: communityId },
+      { _id: 1 }
+    );
+    
+  
     const createdThread = await Thread.create({
       message,
       author,
-      community: communityId || null,
+      community: communityIdObject
     });
     // update the corresponding user
 
     await User.findByIdAndUpdate(author, {
       $push: { threads: createdThread._id },
     });
+    if (communityIdObject) {
+      // Update Community model
+      await Community.findByIdAndUpdate(communityIdObject, {
+        $push: { threads: createdThread._id },
+      });
+    }
 
     revalidatePath(path);
     return createdThread._id;

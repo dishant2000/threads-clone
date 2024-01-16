@@ -1,11 +1,13 @@
 import AccountProfile from '@/components/forms/AccountProfile';
 import '../../globals.css'
 import { currentUser } from '@clerk/nextjs';
+import { fetchUser } from '@/lib/actions/user.actions';
+import { redirect } from 'next/navigation';
 async function Onboarding(){
     const user = await currentUser();
     // console.log("this is user",user);
-    const userInfo = null;
-
+    if(!user) redirect('/sign-in');
+    const userInfo = await fetchUser({userId: user.id});
     const userData = {
         id: user.id,
         objectId: userInfo?._id,

@@ -1,4 +1,4 @@
-import UserCard from "@/components/shared/UserCard";
+import UserCard from "@/components/cards/UserCard";
 import UserProfiler from "@/components/shared/UserProfiler";
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
 import {currentUser } from "@clerk/nextjs"

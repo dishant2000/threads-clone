@@ -17,7 +17,7 @@ function UserCard({
 }): JSX.Element {
   const router = useRouter();
   return (
-    <section className="flex items-center justify-between gap-4">
+    <section className="flex items-center justify-between gap-4 my-4">
         <div className="flex items-center gap-4">
             <div className="rounded-full fill object-contain">
                 <Image
